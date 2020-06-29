@@ -1,9 +1,9 @@
-import React, { useRef, useEffect, useState, createContext } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Messenger from "../Messenger";
 import { WsContext } from "../../contexts/ws";
 
 export default function App() {
-  const [isPaused, setPause] = useState(false);
+  const [isPaused] = useState(false);
   const ws = useRef(null);
 
   useEffect(() => {

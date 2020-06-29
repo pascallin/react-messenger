@@ -3,11 +3,10 @@ import ConversationSearch from "../ConversationSearch";
 import ConversationListItem from "../ConversationListItem";
 import Toolbar from "../Toolbar";
 import ToolbarButton from "../ToolbarButton";
-// import axios from "axios";
 
 import "./ConversationList.css";
 
-import { fakeUsers } from "./fakeuser";
+import { apiService } from "../../services/api";
 
 export default function ConversationList(props) {
   const [conversations, setConversations] = useState([]);
@@ -16,16 +15,16 @@ export default function ConversationList(props) {
   }, []);
 
   const getConversations = () => {
-    // axios.get('https://randomuser.me/api/?results=20').then(response => {
-    let newConversations = fakeUsers.results.map((result) => {
-      return {
-        photo: result.picture.large,
-        name: `${result.name.first} ${result.name.last}`,
-        text: "Hello world! This is a long message that needs to be truncated.",
-      };
+    apiService.getMessengers().then((response) => {
+      let newConversations = response.data.users.map((result) => {
+        return {
+          photo: result.picture.large,
+          name: `${result.name.first} ${result.name.last}`,
+          text: result.location.timezone.description,
+        };
+      });
+      setConversations([...conversations, ...newConversations]);
     });
-    setConversations([...conversations, ...newConversations]);
-    // });
   };
 
   return (
