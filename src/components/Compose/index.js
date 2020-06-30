@@ -6,10 +6,7 @@ export default function Compose(props) {
   const [message, setMessage] = useState("");
   const onEnter = (e) => {
     if (e.key === "Enter") {
-      console.log(message);
-      if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-        ws.current.send(message);
-      }
+      ws.current.send(message);
     }
   };
 
