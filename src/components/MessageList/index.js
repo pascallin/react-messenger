@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+
 import Compose from "../Compose";
 import Toolbar from "../Toolbar";
 import ToolbarButton from "../ToolbarButton";
 import Message from "../Message";
-import moment from "moment";
 import { apiService } from "../../services/api";
+import { setMessageList, messageListSelector } from "../../redux";
 
 import "./MessageList.css";
+import { roll } from "../../utils/rolling";
 
-const MY_USER_ID = "apple";
+const MY_USER_ID = "pascal";
 
 export default function MessageList(props) {
-  const [messages, setMessages] = useState([]);
+  const dispatch = useDispatch();
+  // const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(
@@ -19,13 +24,17 @@ export default function MessageList(props) {
       if (isLoading) {
         (async function anyNameFunction() {
           const res = await apiService.getMessages();
-          setMessages(res.data.tempMessages);
+          // setMessages(res.data);
+          dispatch(setMessageList(res.data));
           setIsLoading(false);
         })();
       }
     },
     [isLoading]
   );
+
+  const messages = useSelector(messageListSelector);
+  roll();
 
   const renderMessages = () => {
     let i = 0;

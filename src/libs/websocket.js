@@ -1,5 +1,5 @@
 export class WebSocketInstance {
-  connect() {
+  connect(options) {
     const ws = new WebSocket(
       `ws://${process.env.REACT_APP_SERVER_HOST}:${
         process.env.REACT_APP_SERVER_PORT
@@ -25,6 +25,9 @@ export class WebSocketInstance {
         data = message.data;
       }
       console.log("receive message: ", data);
+      if (options.receiveHookFunc) {
+        options.receiveHookFunc(data);
+      }
     };
   }
   close() {
